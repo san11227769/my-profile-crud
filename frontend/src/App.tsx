@@ -1,3 +1,4 @@
+
 import {
   BrowserRouter,
   Routes,
@@ -11,25 +12,28 @@ import Login from "./pages/Login";
 import ProtectedRoute from "./components/ProtectedRoute";
 import Profile from "./pages/Profile";
 import api from "./api/axios";
+import { AuthProvider, useAuth } from "./context/AuthContext";
 
 function Header() {
   const navigate = useNavigate();
-  const isLoggedIn = Boolean(sessionStorage.getItem("accessToken"));
+  const { isAuthenticated, setIsAuthenticated } = useAuth();
 
   async function handleLogout() {
     try {
       await api.post("/auth/logout");
+    } catch (error) {
+      console.error("Logout request failed:", error);
     } finally {
       sessionStorage.removeItem("accessToken");
+      setIsAuthenticated(false);
       navigate("/login", { replace: true });
-      window.location.reload();
     }
   }
 
   return (
     <header className="app-header">
       <nav className="nav-links">
-        {isLoggedIn ? (
+        {isAuthenticated ? (
           <>
             <Link to="/profile">My Profile</Link>
             <button onClick={handleLogout}>Logout</button>
@@ -45,30 +49,48 @@ function Header() {
   );
 }
 
-function PublicRoute({ children }: { children: React.ReactNode }) {
-  return sessionStorage.getItem("accessToken")
-    ? <Navigate to="/profile" replace />
-    : children;
-}
+function AppRoutes() {
+  const { isAuthenticated, isChecking } = useAuth();
 
-export default function App() {
+  if (isChecking) return <p>Checking session...</p>;
+
   return (
-    <BrowserRouter>
+    <>
       <Header />
-
       <Routes>
-        <Route path="/" element={<Navigate to="/profile" replace />} />
-        <Route path="/register" element={
-          <PublicRoute><Register /></PublicRoute>
-        } />
-        <Route path="/login" element={
-          <PublicRoute><Login /></PublicRoute>
-        } />
+        <Route
+          path="/"
+          element={
+            <Navigate to={isAuthenticated ? "/profile" : "/login"} replace />
+          }
+        />
+        <Route
+          path="/register"
+          element={
+            isAuthenticated ? <Navigate to="/profile" replace /> : <Register />
+          }
+        />
+        <Route
+          path="/login"
+          element={
+            isAuthenticated ? <Navigate to="/profile" replace /> : <Login />
+          }
+        />
         <Route element={<ProtectedRoute />}>
           <Route path="/profile" element={<Profile />} />
         </Route>
         <Route path="*" element={<Navigate to="/login" replace />} />
       </Routes>
+    </>
+  );
+}
+
+export default function App() {
+  return (
+    <BrowserRouter>
+      <AuthProvider>
+        <AppRoutes />
+      </AuthProvider>
     </BrowserRouter>
   );
 }

@@ -6,14 +6,14 @@ import type {
 } from "axios";
 
 
-
+const API_URL = import.meta.env.VITE_API_URL;
 const api = axios.create({
-  baseURL: "http://localhost:5000/api",
+  baseURL: API_URL,
   withCredentials: true,
 });
 
 const refreshClient = axios.create({
-  baseURL: "http://localhost:5000/api",
+  baseURL: API_URL,
   withCredentials: true,
 });
 
@@ -67,9 +67,8 @@ api.interceptors.response.use(
       original.headers.set("Authorization", `Bearer ${newToken}`);
 
       return api(original);
-    } catch (refreshError) {
+    }  catch (refreshError) {
       sessionStorage.removeItem("accessToken");
-      window.location.href = "/login";
       return Promise.reject(refreshError);
     }
   }
