@@ -1,0 +1,109 @@
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: Inter, Arial, sans-serif;
+  background: #f4f7fb;
+  color: #1a2530;
+}
+
+nav {
+  display: flex;
+  gap: 20px;
+  padding: 18px 8%;
+  background: #fff;
+  border-bottom: 1px solid #e5eaf0;
+}
+
+nav a {
+  color: #0066ff;
+  text-decoration: none;
+  font-weight: 600;
+}
+
+form {
+  width: min(420px, calc(100% - 32px));
+  margin: 60px auto;
+  padding: 32px;
+  background: #fff;
+  border: 1px solid #e5eaf0;
+  border-radius: 16px;
+  box-shadow: 0 8px 28px #1a253010;
+}
+
+h2 {
+  margin-top: 0;
+  margin-bottom: 24px;
+}
+
+input,
+textarea {
+  display: block;
+  width: 100%;
+  margin: 8px 0 18px;
+  padding: 12px;
+  border: 1px solid #d5dce5;
+  border-radius: 8px;
+  font: inherit;
+}
+
+textarea {
+  min-height: 110px;
+  resize: vertical;
+}
+
+button {
+  padding: 12px 18px;
+  border: 0;
+  border-radius: 8px;
+  background: #0066ff;
+  color: white;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+button:hover {
+  background: #0052cc;
+}
+
+button + button {
+  margin-left: 10px;
+}
+
+p {
+  line-height: 1.6;
+}
+.app-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 16px 8%;
+  background: white;
+  border-bottom: 1px solid #e5eaf0;
+}
+
+.brand {
+  font-size: 20px;
+  font-weight: 700;
+  color: #0066ff;
+  text-decoration: none;
+}
+
+.nav-links {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+.nav-links a {
+  color: #1a2530;
+  text-decoration: none;
+  font-weight: 600;
+}
+
+.nav-links button {
+  margin: 0;
+}
